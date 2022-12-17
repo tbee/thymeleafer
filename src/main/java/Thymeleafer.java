@@ -7,25 +7,17 @@
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
-import org.thymeleaf.templateresolver.StringTemplateResolver;
 import picocli.CommandLine;
 
-import java.io.*;
-import java.lang.invoke.CallSite;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 
-//TODO:
-//- graalvm?
-
-/**
- */
 @CommandLine.Command(name = "thymeleafer", //
         description = "Uses the Thymeleaf template engine to process Thymeleaf templates from the commandline")
 public class Thymeleafer implements Callable<Void> {
@@ -37,19 +29,19 @@ public class Thymeleafer implements Callable<Void> {
         }
     }
 
-    @CommandLine.Parameters(index = "0", description = "The template file")
+    @CommandLine.Parameters(index = "0", description = "The Thymeleaf template file", paramLabel = "template-file")
     private String templateFilename = null;
 
     @CommandLine.Option(names = {"-v", "--values"}, description = "The values (properties) file to be used in the template")
     private File valuesFile = null;
 
-    @CommandLine.Option(names = {"-e", "--encoding"}, description = "The encoding used in the template file", defaultValue = "UTF-8")
+    @CommandLine.Option(names = {"-e", "--encoding"}, description = "The encoding used in the template file (default: ${DEFAULT-VALUE})", defaultValue = "UTF-8")
     private String encoding = null;
 
-    @CommandLine.Option(names = {"-m", "--mode"}, description = "The template mode to be used", defaultValue = "HTML")
+    @CommandLine.Option(names = {"-m", "--mode"}, description = "The template mode to be used (default: ${DEFAULT-VALUE})", defaultValue = "HTML")
     private String templateMode = null;
 
-    @CommandLine.Option(names = {"-o", "--output"}, description = "The file where to write the output")
+    @CommandLine.Option(names = {"-o", "--output"}, description = "The file where to write the output to")
     private File outputFile = null;
 
     @Override

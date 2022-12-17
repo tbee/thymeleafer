@@ -20,7 +20,7 @@ public class ThymeleaferTest {
 
         // Then
         Assertions.assertTrue(result.contains("<p>Hello, null!</p>")); // No values, but still replaced
-        Assertions.assertTrue(result.contains("<h1>Thymeleaf Fragments header</h1>")); // fragment was resolved
+        Assertions.assertTrue(result.contains("<h1>Thymeleafer Fragments header</h1>")); // fragment was resolved
     }
 
     @Test
@@ -35,7 +35,7 @@ public class ThymeleaferTest {
 
         // Then
         Assertions.assertTrue(result.contains("<p>Hello, Thom!</p>")); // Value is replaced
-        Assertions.assertTrue(result.contains("<h1>Thymeleaf Fragments header</h1>")); // fragment was resolved
+        Assertions.assertTrue(result.contains("<h1>Thymeleafer Fragments header</h1>")); // fragment was resolved
     }
 
     private File createTempFile() {
@@ -58,6 +58,7 @@ public class ThymeleaferTest {
     }
     private String readFileThenDelete(File file) {
         String content = readFile(file);
+        System.out.println(content);
         file.delete();
         return content;
     }
