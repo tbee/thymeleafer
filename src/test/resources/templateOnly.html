@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+      <meta charset="UTF-8">
+      <title>Sample Thymeleaf template</title>
+    </head>
+    <body>
+
+        <header th:insert="src/test/resources/fragments.html :: header"> </header>
+
+        <p th:text="|Hello, ${name}!|">Hello, user!</p>
+        <p th:text="|Today is ${date}.|">Today is ...</p>
+
+        <th:block th:insert="src/test/resources/fragments.html :: footer"> </th:block>
+
+    </body>
+</html>
