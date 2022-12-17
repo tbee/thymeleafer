@@ -1,4 +1,8 @@
-package org.tbee.thymeleafer;
+///usr/bin/env jbang "$0" "$@" ; exit $?
+//JAVA 17+
+//DEPS org.thymeleaf:thymeleaf:3.1.1.RELEASE
+//DEPS info.picocli:picocli:4.7.0
+//DEPS org.slf4j:slf4j-nop:2.0.6
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -17,9 +21,10 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 
+//TODO:
+//- graalvm?
+
 /**
- * TODO:
- * - graalvm?
  */
 @CommandLine.Command(name = "thymeleafer", //
         description = "Uses the Thymeleaf template engine to process Thymeleaf templates from the commandline")
@@ -38,15 +43,18 @@ public class Thymeleafer implements Callable<Void> {
     @CommandLine.Option(names = {"-v", "--values"}, description = "The values (properties) file to be used in the template")
     private File valuesFile = null;
 
-    @CommandLine.Option(names = {"-e", "--encoding"}, description = "The encoding used in the template file")
-    private String encoding = "UTF-8";
+    @CommandLine.Option(names = {"-e", "--encoding"}, description = "The encoding used in the template file", defaultValue = "UTF-8")
+    private String encoding = null;
+
+    @CommandLine.Option(names = {"-m", "--mode"}, description = "The template mode to be used", defaultValue = "HTML")
+    private String templateMode = null;
 
     @CommandLine.Option(names = {"-o", "--output"}, description = "The file where to write the output")
     private File outputFile = null;
 
     @Override
     public Void call() throws Exception {
-        boolean showTraceOutput = (valuesFile != null);
+        boolean showTraceOutput = (outputFile != null); // if stdout is intended to be redirected, show no logging
 
         // Read the values
         Properties properties = new Properties();
@@ -57,7 +65,9 @@ public class Thymeleafer implements Callable<Void> {
 
         // Resolve filenames
         var resolver = new FileTemplateResolver();
-        resolver.setTemplateMode(TemplateMode.HTML);
+        TemplateMode templateMode = TemplateMode.valueOf(this.templateMode);
+        if (showTraceOutput) System.out.println("Template mode " + templateMode);
+        resolver.setTemplateMode(templateMode);
         resolver.setCharacterEncoding(encoding);
 
         // Populate the values
@@ -78,7 +88,7 @@ public class Thymeleafer implements Callable<Void> {
         }
         else {
             try (
-                FileWriter fileWriter = new FileWriter(outputFile, Charset.forName(encoding));
+                    FileWriter fileWriter = new FileWriter(outputFile, Charset.forName(encoding));
             ){
                 System.out.println("Writing to " + outputFile.getAbsolutePath());
                 fileWriter.write(result);

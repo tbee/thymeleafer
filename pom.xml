@@ -37,6 +37,11 @@
             <artifactId>picocli</artifactId>
             <version>4.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>2.0.6</version>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -57,7 +62,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.tbee.thymeleafer.Thymeleafer</mainClass>
+                            <mainClass>Thymeleafer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
